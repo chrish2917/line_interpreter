@@ -57,7 +57,17 @@ let rec lookup (l : table) (i : id) : int =
 
 let update (t : table) (e : entry) : table = e :: t
 
-let rec interpStm (s : (stm * table)) : table =
+let rec print_explist : int list -> unit = function
+  | [] -> ()
+  | h :: t -> print_int h; print_explist t
+
+let rec interpExpList l tb acc =
+  match l with
+  | [] -> acc
+  | h :: t ->
+    let eval_rec = interpExp (h, tb) in interpExpList t (snd eval_rec) (acc @ [fst eval_rec])
+
+and interpStm (s : (stm * table)) : table =
   match s with
   | (CompoundStm (st, st'), tb1) ->
     let tb2 = (interpStm (st, tb1)) in (interpStm (st', (tb2)))  
@@ -65,9 +75,8 @@ let rec interpStm (s : (stm * table)) : table =
     let pair = (interpExp (e, tb1)) in
     let ent = {key = i; value = fst pair} in 
       update (snd pair) (ent)
-  | (PrintStm l, tb1) -> match l with
-    | h :: t -> let pair = interpExp(h, tb1) in Printf.printf "%d" (fst pair)
-    | [] -> snd s 
+  | (PrintStm l, tb1) ->
+    let eval_explist = interpExpList l tb1 [] in print_explist eval_explist; tb1 
 
 and interpExp : (exp * table) -> (int * table) = function
   | (NumExp (n), t) -> (n, t)
@@ -85,5 +94,7 @@ and interpExp : (exp * table) -> (int * table) = function
     | Times ->
       ((fst e1 * fst e2), snd e2)
     | Div ->
-      ((fst e1 / fst e2), snd e2) 
+      ((fst e1 / fst e2), snd e2)
+
+let interp (s : stm) : unit = interpStm (s, [])
 
