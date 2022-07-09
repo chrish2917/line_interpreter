@@ -59,13 +59,14 @@ let update (t : table) (e : entry) : table = e :: t
 
 let rec print_explist : int list -> unit = function
   | [] -> ()
-  | h :: t -> print_int h; print_explist t
+  | h :: t -> print_int h; print_char ' '; print_explist t
 
 let rec interpExpList l tb acc =
   match l with
   | [] -> acc
   | h :: t ->
-    let eval_rec = interpExp (h, tb) in interpExpList t (snd eval_rec) (acc @ [fst eval_rec])
+    let eval_rec = interpExp (h, tb) in
+    interpExpList t (snd eval_rec) (acc @ [fst eval_rec])
 
 and interpStm (s : (stm * table)) : table =
   match s with
@@ -76,7 +77,9 @@ and interpStm (s : (stm * table)) : table =
     let ent = {key = i; value = fst pair} in 
       update (snd pair) (ent)
   | (PrintStm l, tb1) ->
-    let eval_explist = interpExpList l tb1 [] in print_explist eval_explist; tb1 
+    let eval_explist = interpExpList l tb1 [] in
+    print_explist eval_explist;
+    print_newline (); tb1 
 
 and interpExp : (exp * table) -> (int * table) = function
   | (NumExp (n), t) -> (n, t)
@@ -96,5 +99,7 @@ and interpExp : (exp * table) -> (int * table) = function
     | Div ->
       ((fst e1 / fst e2), snd e2)
 
-let interp (s : stm) : unit = interpStm (s, [])
+let interp (s : stm) : unit = let tb = interpStm (s, []) in
+  match tb with
+  | _ -> ()
 
