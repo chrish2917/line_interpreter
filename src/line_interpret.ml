@@ -103,7 +103,3 @@ let interp (s : stm) : unit = let tb = interpStm (s, []) in
   match tb with
   | _ -> ()
 
-let () =
-  interp prog
-  
-

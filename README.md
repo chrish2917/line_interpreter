@@ -1,5 +1,5 @@
-# Straight Line Interpreter
-A line interpreter for a simple grammar
+# Line Interpreter
+A tree walking interpreter for a simple grammar, from Appel's Modern Compiler Implementation in ML.
 
 ## Usage
 Install dependencies via opam:
@@ -8,10 +8,13 @@ opam install utop
 cd line_interpret
 utop 
 ```
-Now you can run the line interpreter by executing `#use "line_interpret.ml;;` and `interp prog;;`.   
+Now you can run the line interpreter by executing `#use "line_interpret.ml;;` and `interp prog;;` in utop.   
 
-## TODO 
-- Grammar description
-- Test directory of straight line programs
+## Grammar
+
+![screenshot](meta/grammar.png) 
+
+## TODO
+- Test directory of line programs
 - Dune build file 
 
