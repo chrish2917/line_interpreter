@@ -1,6 +1,8 @@
 # Line Interpreter
 A tree walking interpreter for a simple grammar, from Appel's Modern Compiler Implementation in ML.
 
+![screenshot](meta/straight_line_program.png)
+
 ## Usage
 Install dependencies via opam:
 ```bash
@@ -15,6 +17,7 @@ Now you can run the line interpreter by executing `#use "line_interpret.ml;;` an
 ![screenshot](meta/grammar.png) 
 
 ## TODO
-- Test directory of line programs
-- Dune build file 
+- Currently the programs to be interpreted have to be constructed manually into the grammar rules above; in the near future, this construction will happen automatically. 
+- Test directory of line programs.
+- Dune build file.
 
